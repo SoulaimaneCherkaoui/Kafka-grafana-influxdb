@@ -1,0 +1,67 @@
+{
+  "datasource": {
+    "type": "influxdb",
+    "uid": "bd1bb930-c8bc-4292-b04e-75cdbf90c4a8"
+  },
+  "fieldConfig": {
+    "defaults": {
+      "mappings": [],
+      "thresholds": {
+        "mode": "percentage",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "orange",
+            "value": 70
+          },
+          {
+            "color": "red",
+            "value": 85
+          }
+        ]
+      },
+      "color": {
+        "mode": "thresholds"
+      }
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 9,
+    "w": 10,
+    "x": 0,
+    "y": 0
+  },
+  "id": 2,
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "displayMode": "gradient",
+    "valueMode": "color",
+    "showUnfilled": true,
+    "minVizWidth": 0,
+    "minVizHeight": 10
+  },
+  "pluginVersion": "9.5.2",
+  "targets": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "bd1bb930-c8bc-4292-b04e-75cdbf90c4a8"
+      },
+      "query": "from(bucket: \"fraud_alerts\")\r\n  |> range(start: -2h) // Transactions des 30 derniers jours\r\n  |> filter(fn: (r) => r._measurement == \"fraud_transactions\") // Filtre sur le measurement\r\n  |> group(columns: [\"userId\"]) // Regroupe par utilisateur\r\n  |> map(fn: (r) => ({userId: r.userId, count: 1, amount: r._value})) // Crée des colonnes \"count\" et \"amount\" pour chaque transaction\r\n  |> group(columns: [\"userId\"]) // Regroupe à nouveau par utilisateur\r\n  |> sum(column: \"amount\") // Somme des montants des transactions par utilisateur\r\n",
+      "refId": "A"
+    }
+  ],
+  "title": "Montant total des transactions",
+  "type": "bargauge"
+}

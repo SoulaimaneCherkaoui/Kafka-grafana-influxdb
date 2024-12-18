@@ -1,0 +1,94 @@
+{
+  "type": "timeseries",
+  "title": "Panel Title",
+  "gridPos": {
+    "x": 10,
+    "y": 0,
+    "w": 14,
+    "h": 19
+  },
+  "datasource": {
+    "uid": "bd1bb930-c8bc-4292-b04e-75cdbf90c4a8",
+    "type": "influxdb"
+  },
+  "id": 3,
+  "targets": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "bd1bb930-c8bc-4292-b04e-75cdbf90c4a8"
+      },
+      "refId": "A",
+      "query": "from(bucket: \"fraud_alerts\")\r\n  |> range(start: -2h) // Transactions des 30 derniers jours\r\n  \r\n"
+    }
+  ],
+  "options": {
+    "tooltip": {
+      "mode": "single",
+      "sort": "none"
+    },
+    "legend": {
+      "showLegend": true,
+      "displayMode": "list",
+      "placement": "bottom",
+      "calcs": []
+    }
+  },
+  "fieldConfig": {
+    "defaults": {
+      "custom": {
+        "drawStyle": "line",
+        "lineInterpolation": "linear",
+        "barAlignment": 0,
+        "lineWidth": 1,
+        "fillOpacity": 0,
+        "gradientMode": "none",
+        "spanNulls": false,
+        "showPoints": "auto",
+        "pointSize": 5,
+        "stacking": {
+          "mode": "none",
+          "group": "A"
+        },
+        "axisPlacement": "auto",
+        "axisLabel": "",
+        "axisColorMode": "text",
+        "scaleDistribution": {
+          "type": "linear"
+        },
+        "axisCenteredZero": false,
+        "hideFrom": {
+          "tooltip": false,
+          "viz": false,
+          "legend": false
+        },
+        "thresholdsStyle": {
+          "mode": "off"
+        }
+      },
+      "color": {
+        "mode": "palette-classic"
+      },
+      "mappings": [],
+      "thresholds": {
+        "mode": "percentage",
+        "steps": [
+          {
+            "value": null,
+            "color": "green"
+          },
+          {
+            "value": 70,
+            "color": "orange"
+          },
+          {
+            "value": 85,
+            "color": "red"
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "pluginVersion": "9.5.2"
+}
